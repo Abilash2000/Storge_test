@@ -3,7 +3,7 @@ import React from "react";
 // import { Counter } from "./features/counter/Counter";
 import "./App.css";
 import AddButton from "./components/buttons/Add/AddButton";
-import { viewFriends } from "./pages/friend/viewFriends";
+import ViewFriends from "./pages/friend/ViewFriends";
 // import { Grid } from "./components/table/Grid/Grid";
 // import Grid from "./utils/grid/Grid";
 
@@ -11,7 +11,7 @@ const App = () => {
   return (
     <div className="App">
       <AddButton />
-      <viewFriends />
+      <ViewFriends />
       {/* <Grid /> */}
     </div>
   );
