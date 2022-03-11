@@ -14,8 +14,8 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(3),
     "& thead th": {
       fontWeight: "600",
-      color: theme.palette.primary.main,
-      backgroundColor: theme.palette.primary.light,
+      color: "#ffffff",
+      backgroundColor: "#b17cf2",
     },
     "& tbody td": {
       fontWeight: "300",
@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function useTable(records, headCells, filterFn) {
+export default function UseTable(records, headCells, filterFn) {
   const classes = useStyles();
 
   const pages = [5, 10, 25];

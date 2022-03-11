@@ -1,18 +1,15 @@
-import React, { useState } from "react";
-import PeopleOutlineTwoToneIcon from "@material-ui/icons/PeopleOutlineTwoTone";
+import React, { useEffect, useState } from "react";
 import {
   Paper,
   makeStyles,
   TableBody,
   TableRow,
   TableCell,
-  Toolbar,
-  InputAdornment,
 } from "@material-ui/core";
-import useTable from "../../components/table/useTable";
-import * as employeeService from "../../services/employeeService";
-// import Controls from "../../components/controls/Controls";
-import { Search } from "@material-ui/icons";
+import UseTable from "../../components/table/UseTable";
+import { getAllFriendsAsync, selectFriends } from "../../features/friends/friendSlice";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   pageContent: {
@@ -25,75 +22,56 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const headCells = [
-  { id: "fullName", label: "Employee Name" },
-  { id: "email", label: "Email Address (Personal)" },
-  { id: "mobile", label: "Mobile Number" },
-  { id: "department", label: "Department", disableSorting: true },
+  { id: "firstName", label: "First Name" },
+  { id: "lastName", label: "Last Name" },
+  { id: "phone", label: "Mobile Number" },
 ];
 
 const ViewFriends = () => {
   const classes = useStyles();
-  const [records, setRecords] = useState(employeeService.getAllEmployees());
+
+  const records = useSelector(selectFriends);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getAllFriendsAsync())
+  }, [dispatch])
+  
+
   const [filterFn, setFilterFn] = useState({
     fn: (items) => {
       return items;
     },
   });
 
+
   const {
     TblContainer,
     TblHead,
     TblPagination,
     recordsAfterPagingAndSorting,
-  } = useTable(records, headCells, filterFn);
+  } = UseTable(records, headCells, filterFn);
 
-  const handleSearch = (e) => {
-    let target = e.target;
-    setFilterFn({
-      fn: (items) => {
-        if (target.value == "") return items;
-        else
-          return items.filter((x) =>
-            x.fullName.toLowerCase().includes(target.value)
-          );
-      },
-    });
-  };
 
   return (
     <>
-      {/* <PageHeader
-        title="New Employee"
-        subTitle="Form design with validation"
-        icon={<PeopleOutlineTwoToneIcon fontSize="large" />}
-      /> */}
       <Paper className={classes.pageContent}>
-        {/* <EmployeeForm /> */}
-        {/* <Toolbar>
-          <Controls.Input
-            label="Search Employees"
-            className={classes.searchInput}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <Search />
-                </InputAdornment>
-              ),
-            }}
-            onChange={handleSearch}
-          />
-        </Toolbar> */}
         <TblContainer>
           <TblHead />
           <TableBody>
-            {recordsAfterPagingAndSorting().map((item) => (
-              <TableRow key={item.id}>
-                <TableCell>{item.fullName}</TableCell>
-                <TableCell>{item.email}</TableCell>
-                <TableCell>{item.mobile}</TableCell>
-                <TableCell>{item.department}</TableCell>
-              </TableRow>
-            ))}
+            {(() => {
+              if (records) {
+                return recordsAfterPagingAndSorting().map((item) =>  {
+                  return (
+                  <TableRow key={item.id}>
+                    <TableCell>{item.firstName}</TableCell>
+                    <TableCell>{item.lastName}</TableCell>
+                    <TableCell>{item.phone}</TableCell>
+                  </TableRow>
+                  );
+                })
+              }  
+            })()}
           </TableBody>
         </TblContainer>
         <TblPagination />

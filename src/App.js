@@ -10,7 +10,7 @@ import ViewFriends from "./pages/friend/ViewFriends";
 const App = () => {
   return (
     <div className="App">
-      <AddButton />
+      {/* <AddButton /> */}
       <ViewFriends />
       {/* <Grid /> */}
     </div>
